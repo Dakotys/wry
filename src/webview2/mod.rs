@@ -753,18 +753,19 @@ impl InnerWebView {
 
   #[inline]
   unsafe fn attach_custom_protocol_handler(
-    webview: &ICoreWebView2,
+    webview_2: &ICoreWebView2,
     env: &ICoreWebView2Environment,
     hwnd: HWND,
     scheme: &'static str,
     attributes: &mut WebViewAttributes,
     token: &mut EventRegistrationToken,
   ) -> Result<()> {
+    let webview: &ICoreWebView2_22 = unsafe { &*(webview_2 as *const ICoreWebView2 as *const ICoreWebView2_22) };
     for (name, _) in &attributes.custom_protocols {
       // WebView2 supports non-standard protocols only on Windows 10+, so we have to use this workaround
       // See https://github.com/MicrosoftEdge/WebView2Feedback/issues/73
       let filter = HSTRING::from(format!("{scheme}://{name}.*"));
-      webview.AddWebResourceRequestedFilter(&filter, COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL)?;
+      webview.AddWebResourceRequestedFilterWithRequestSourceKinds(&filter, COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL, COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_ALL)?;
     }
 
     let env = env.clone();
