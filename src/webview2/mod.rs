@@ -613,7 +613,7 @@ impl InnerWebView {
             take_pwstr(uri)
           };
 
-          println!("{:?}", args.NewWindow);
+          println!("{:?}", args.NewWindow());
           println!("{:?}", x);
 
           let allow = new_window_req_handler(uri);
