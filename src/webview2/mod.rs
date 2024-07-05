@@ -602,7 +602,7 @@ impl InnerWebView {
     // New window handler
     if let Some(new_window_req_handler) = attributes.new_window_req_handler.take() {
       webview.add_NewWindowRequested(
-        &NewWindowRequestedEventHandler::create(Box::new(move |_, args| {
+        &NewWindowRequestedEventHandler::create(Box::new(move |x, args| {
           let Some(args) = args else {
             return Ok(());
           };
@@ -612,6 +612,9 @@ impl InnerWebView {
             args.Uri(&mut uri)?;
             take_pwstr(uri)
           };
+
+          !println("{:?}", args.NewWindow);
+          !println("{:?}", x);
 
           let allow = new_window_req_handler(uri);
           args.SetHandled(!allow)?;
