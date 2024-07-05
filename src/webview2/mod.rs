@@ -613,6 +613,8 @@ impl InnerWebView {
             take_pwstr(uri)
           };
 
+          println!("hi");
+
           println!("{:?}", args.NewWindow());
           println!("{:?}", x);
 
