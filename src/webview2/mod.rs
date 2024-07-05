@@ -614,16 +614,6 @@ impl InnerWebView {
           };
 
           let allow = new_window_req_handler(uri);
-
-          if allow {
-            let mut new_window: Option<ICoreWebView2> = None;
-            args.NewWindow(&mut new_window)?;
-
-            if let Some(new_window) = new_window {
-              println!("New window handle: {:?}", new_window);
-            }
-          }
-
           args.SetHandled(!allow)?;
 
           Ok(())
